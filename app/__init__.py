@@ -17,6 +17,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 if app.debug:
+    # Receiving errors via email
     # auth = None
     # if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
     #     auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
@@ -36,6 +37,13 @@ if app.debug:
         os.mkdir('logs')
     file_handler = RotatingFileHandler('logs/flask-blog-engine.log', maxBytes=10240,
                                         backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d'))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Flask Blog Engine startup')
                                         
 
 from app import routes, models, errors
