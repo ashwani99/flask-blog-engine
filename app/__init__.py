@@ -8,6 +8,7 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 
+
 app = Flask(__name__)
 # print(dir(app))
 app.config.from_object(Config)
@@ -15,6 +16,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+
 
 if app.debug:
     # Receiving errors via email
@@ -32,7 +34,6 @@ if app.debug:
     # mail_handler.setLevel(logging.ERROR)
     # app.logger.addHandler(mail_handler)
     
-
     if not os.path.exists('logs'):
         os.mkdir('logs')
     file_handler = RotatingFileHandler('logs/flask-blog-engine.log', maxBytes=10240,

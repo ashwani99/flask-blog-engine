@@ -26,41 +26,33 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-
 
     def check_password(self, password):
         # check_password_hash takes arguments in order
         # i.e passing (hash, password) would work but (password, hash) would not
         return check_password_hash(self.password_hash, password)
 
-
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
-
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
-
 
     def unfollow(self, user):
         if self.is_following(user):
             self.followed.remove(user)
 
-
     def is_following(self, user):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
-
 
     def followed_posts(self):
         followed_posts = Post.query.join(
@@ -75,7 +67,6 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
