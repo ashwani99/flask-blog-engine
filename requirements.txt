@@ -6,3 +6,4 @@ flask-migrate
 flask-login
 flask-mail
 flask-jwt
+flask-moment
