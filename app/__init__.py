@@ -24,6 +24,11 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 
+# registering blueprints
+from app.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
+
+
 if app.debug:
     # Receiving errors via email
     # auth = None
@@ -53,4 +58,4 @@ if app.debug:
     app.logger.info('Flask Blog Engine startup')
                                         
 
-from app import routes, models, errors
+from app import routes, models
