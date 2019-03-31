@@ -6,9 +6,10 @@ from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, \
     ResetPasswordRequestForm
 from app.models import User, Post
 from werkzeug.urls import url_parse
+from app.auth import bp
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         flash('You are already logged in!')
@@ -30,14 +31,14 @@ def login():
     return render_template('auth/login.html', title='Sign In', form=form)
     
 
-@app.route('/logout')
+@bp.route('/logout')
 def logout():
     if current_user.is_authenticated:
         logout_user()
         return redirect(url_for('index'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -52,7 +53,7 @@ def register():
     return render_template('auth/register.html', title='Register', form=form)
 
 
-@app.route('/reset_password_request', methods=['GET', 'POST'])
+@bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -66,7 +67,7 @@ def reset_password_request():
     return render_template('auth/reset_password_request.html', form=form)
 
 
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+@bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
