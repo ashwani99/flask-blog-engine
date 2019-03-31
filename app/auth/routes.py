@@ -1,10 +1,10 @@
-from app import app, db
+from app import db
 from flask import render_template, redirect, flash, url_for, request
 from app.auth.email import send_password_reset_email
-from flask_login import current_user, login_user, logout_user, login_required
+from flask_login import current_user, login_user, logout_user
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, \
     ResetPasswordRequestForm
-from app.models import User, Post
+from app.models import User
 from werkzeug.urls import url_parse
 from app.auth import bp
 
@@ -49,7 +49,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you have been successfully registered!')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
 
