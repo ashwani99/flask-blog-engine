@@ -20,7 +20,7 @@ def login():
         # print(user)
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         # if next_page is not defined or it points to a different host
@@ -63,7 +63,7 @@ def reset_password_request():
         if user:
             send_password_reset_email(user)
         flash('Please check your email for instructions for password reset')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('auth/reset_password_request.html', form=form)
 
 
@@ -79,5 +79,5 @@ def reset_password(token):
         user.set_password(form.password.data)
         db.session.commit()
         flash('Your password has been updated successfully!')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
